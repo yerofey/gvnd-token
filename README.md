@@ -18,6 +18,7 @@ If you're using Gitpod, you can skip this step.
 ## Building
 
 To build run:
+
 ```bash
 ./scripts/build.sh
 ```
@@ -47,6 +48,7 @@ source neardev/dev-account.env
 ```
 
 You can tell if the environment variable is set correctly if your command line prints the account name after this command:
+
 ```bash
 echo $CONTRACT_NAME
 ```
@@ -95,7 +97,6 @@ Get metadata:
 
     near view $ID ft_metadata
 
-
 Transfer Example
 ---------------
 
@@ -107,7 +108,6 @@ Add storage deposit for Bob's account:
 
     near call $ID storage_deposit '' --accountId bob.$ID --amount 0.00125
 
-
 Check balance of Bob's account, it should be `0` for now:
 
     near view $ID ft_balance_of '{"account_id": "'bob.$ID'"}'
@@ -115,7 +115,6 @@ Check balance of Bob's account, it should be `0` for now:
 Transfer tokens to Bob from the contract that minted these fungible tokens, exactly 1 yoctoNEAR of deposit should be attached:
 
     near call $ID ft_transfer '{"receiver_id": "'bob.$ID'", "amount": "19"}' --accountId $ID --amount 0.000000000000000000000001
-
 
 Check the balance of Bob again with the command from before and it will now return `19`.
 
@@ -133,19 +132,22 @@ cd ft && cargo test -- --nocapture --color=always
 
 You can run integration tests with the following commands:
 *Rust*
+
 ```bash
 cd integration-tests/rs && cargo run --example integration-tests
 ```
+
 *TypeScript*
+
 ```bash
 cd integration-tests/ts && yarn && yarn test
 ```
 
 ## Notes
 
- - The maximum balance value is limited by U128 (`2**128 - 1`).
- - JSON calls should pass U128 as a base-10 string. E.g. "100".
- - This does not include escrow functionality, as `ft_transfer_call` provides a superior approach. An escrow system can, of course, be added as a separate contract or additional functionality within this contract.
+- The maximum balance value is limited by U128 (`2**128 - 1`).
+- JSON calls should pass U128 as a base-10 string. E.g. "100".
+- This does not include escrow functionality, as `ft_transfer_call` provides a superior approach. An escrow system can, of course, be added as a separate contract or additional functionality within this contract.
 
 ## No AssemblyScript?
 

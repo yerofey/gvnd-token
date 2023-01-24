@@ -38,7 +38,7 @@ impl Contract {
     /// Initializes the contract with the given total supply owned by the given `owner_id` with
     /// default metadata (for example purposes only).
     #[init]
-    pub fn new_default_meta(owner_id: AccountId, total_supply: U128) -> Self {
+    pub fn new_gvnd_meta(owner_id: AccountId, total_supply: U128) -> Self {
         Self::new(
             owner_id,
             total_supply,
@@ -57,11 +57,7 @@ impl Contract {
     /// Initializes the contract with the given total supply owned by the given `owner_id` with
     /// the given fungible token metadata.
     #[init]
-    pub fn new(
-        owner_id: AccountId,
-        total_supply: U128,
-        metadata: FungibleTokenMetadata,
-    ) -> Self {
+    pub fn new(owner_id: AccountId, total_supply: U128, metadata: FungibleTokenMetadata) -> Self {
         assert!(!env::state_exists(), "Already initialized");
         metadata.assert_valid();
         let mut this = Self {
@@ -121,7 +117,7 @@ mod tests {
     fn test_new() {
         let mut context = get_context(accounts(1));
         testing_env!(context.build());
-        let contract = Contract::new_default_meta(accounts(1).into(), TOTAL_SUPPLY.into());
+        let contract = Contract::new_gvnd_meta(accounts(1).into(), TOTAL_SUPPLY.into());
         testing_env!(context.is_view(true).build());
         assert_eq!(contract.ft_total_supply().0, TOTAL_SUPPLY);
         assert_eq!(contract.ft_balance_of(accounts(1)).0, TOTAL_SUPPLY);
@@ -139,7 +135,7 @@ mod tests {
     fn test_transfer() {
         let mut context = get_context(accounts(2));
         testing_env!(context.build());
-        let mut contract = Contract::new_default_meta(accounts(2).into(), TOTAL_SUPPLY.into());
+        let mut contract = Contract::new_gvnd_meta(accounts(2).into(), TOTAL_SUPPLY.into());
         testing_env!(context
             .storage_usage(env::storage_usage())
             .attached_deposit(contract.storage_balance_bounds().min.into())
